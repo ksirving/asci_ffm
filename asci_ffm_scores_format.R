@@ -1,5 +1,7 @@
 #  statewide study - asci - ffm
 
+library("raster")
+
 #  upload algae data - asci scores downloaded from https://sites.google.com/view/asci/results - Susie
 
 setwd("/Users/katieirving/Documents/git/asci_ffm-master")
@@ -52,4 +54,16 @@ asci_scor_sites <- na.omit(asci_scor_sites)
 head(asci_scor_sites)
 write.csv(asci_scor_sites, "output_data/asci_scores_coords.csv")
 
+coords <- asci_scor_sites[, 2:3]
+#  coords into numeric
+asci_scor_sites$Latitude <- as.numeric(as.character(asci_scor_sites$Latitude))
+asci_scor_sites$Longitude <- as.numeric(as.character(asci_scor_sites$Longitude))
+
+#  remove NAs
+sum(is.na(asci_scor_sites)) #50
+asci_scor_sites <- na.omit(asci_scor_sites)
+
+#  spatial point df
+coordinates(asci_scor_sites) <- c("Latitude","Longitude")
+     plot(asci_scor_sites)
      
